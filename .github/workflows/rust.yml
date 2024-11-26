@@ -9,10 +9,13 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
+      - uses: actions/checkout@v4
+      - name: Install cargo-hack from crates.io
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-bisect-rustc
+      - name: Build
+        run: cargo bisect-rustc --start=1.80.1 --end=1.81.0 -- test
